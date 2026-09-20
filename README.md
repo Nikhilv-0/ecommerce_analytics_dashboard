@@ -23,10 +23,4 @@ The project covers:
 - Order status analysis
 - Year-over-year revenue growth
 
-## Project Structure
-
-data/                         # Dataset files
-sql/
-├── table_creation.sql        # Database and table creation
-└── ecommerce_analytics.sql              # Business analysis queries
-Ecommerce_Sales_Customer_Analytics.pbix     # Power BI dashboard
+Note: The data used in this project is synthetic and created solely for educational purposes.
