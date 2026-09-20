@@ -1,0 +1,121 @@
+-- USE ecommerce_analytics;
+
+-- SELECT
+-- 	YEAR(order_date) AS Year,
+--     MONTH(order_date) AS Month,
+--     COUNT(DISTINCT order_id) AS total_orders,
+--     ROUND(SUM(revenue), 2) AS total_revenue
+-- FROM orders
+-- GROUP BY
+-- 	YEAR(order_date),
+--     MONTH(order_date)
+-- ORDER BY 
+-- 	Year, Month;
+--     
+-- SELECT
+--     p.category,
+--     ROUND(SUM(o.revenue), 2) AS total_revenue,
+--     ROUND(SUM(o.profit), 2) AS total_profit,
+--     ROUND(
+--         SUM(o.profit) / SUM(o.revenue) * 100,
+--         2
+--     ) AS profit_margin_pct
+-- FROM orders o
+-- JOIN products p
+--     ON o.product_id = p.product_id
+-- GROUP BY p.category
+-- ORDER BY total_revenue DESC;
+
+-- SELECT
+--     p.product_name,
+--     p.category,
+--     ROUND(SUM(o.revenue), 2) AS total_revenue
+-- FROM orders o
+-- JOIN products p
+--     ON o.product_id = p.product_id
+-- GROUP BY
+--     p.product_id,
+--     p.product_name,
+--     p.category
+-- ORDER BY total_revenue DESC
+-- LIMIT 10;
+
+-- SELECT
+--     p.product_name,
+--     p.category,
+--     ROUND(SUM(o.profit), 2) AS total_profit
+-- FROM orders o
+-- JOIN products p
+--     ON o.product_id = p.product_id
+-- GROUP BY
+--     p.product_id,
+--     p.product_name,
+--     p.category
+-- ORDER BY total_profit DESC
+-- LIMIT 10;
+
+-- SELECT
+--     customer_type,
+--     COUNT(*) AS customer_count
+-- FROM (
+--     SELECT
+--         customer_id,
+--         CASE
+--             WHEN COUNT(DISTINCT order_id) > 1
+--                 THEN 'Repeat Customer'
+--             ELSE 'One-Time Customer'
+--         END AS customer_type
+--     FROM orders
+--     GROUP BY customer_id
+-- ) AS customer_summary
+-- GROUP BY customer_type;
+
+-- SELECT
+--     c.state,
+--     COUNT(DISTINCT o.order_id) AS total_orders,
+--     ROUND(SUM(o.revenue), 2) AS total_revenue,
+--     ROUND(SUM(o.profit), 2) AS total_profit
+-- FROM customers c
+-- JOIN orders o
+--     ON c.customer_id = o.customer_id
+-- GROUP BY c.state
+-- ORDER BY total_revenue DESC;
+
+-- SELECT
+--     order_status,
+--     COUNT(*) AS total_orders,
+--     ROUND(
+--         (COUNT(*) / (SELECT COUNT(*) FROM orders)) * 100,
+--         2
+--     ) AS order_percentage
+-- FROM orders
+-- GROUP BY order_status
+-- ORDER BY total_orders DESC;
+
+-- SELECT
+--     payment_method,
+--     COUNT(*) AS total_payments,
+--     (COUNT(*) / (SELECT COUNT(*) FROM payments)) * 100 AS payment_percentage
+-- FROM payments
+-- GROUP BY payment_method
+-- ORDER BY total_payments DESC;
+
+-- SELECT
+--     year,
+--     total_revenue,
+--     LAG(total_revenue) OVER (ORDER BY year) AS previous_year_revenue,
+--     ROUND(
+--         (
+--             (total_revenue - LAG(total_revenue) OVER (ORDER BY year))
+--             / LAG(total_revenue) OVER (ORDER BY year)
+--         ) * 100,
+--         2
+--     ) AS yoy_growth_pct
+-- FROM (
+--     SELECT
+--         YEAR(order_date) AS year,
+--         SUM(revenue) AS total_revenue
+--     FROM orders
+--     GROUP BY YEAR(order_date)
+-- ) AS yearly_sales
+-- ORDER BY year;
